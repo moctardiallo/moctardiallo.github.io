@@ -24,6 +24,13 @@
 	
 	<!-- Authors Credits -->
 	<!-- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
+
+	<script>
+		function sendMessage(from, to, msg) {
+			alert(from + " said " + msg + " to " + to)
+		}
+	</script>
+	
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 	  
@@ -867,7 +874,7 @@
 
         <div class="row no-gutters block-9">
           <div class="col-md-6 order-md-last d-flex">
-            <form action="#" class="bg-light p-4 p-md-5 contact-form">
+            <form action="#" onsubmit="sendMessage('mctrjalloh@gmail.com', 'moctarjallo@gmail.com', 'Whatsup')" class="bg-light p-4 p-md-5 contact-form">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Your Name">
               </div>
