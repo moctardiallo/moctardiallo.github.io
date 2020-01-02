@@ -27,8 +27,8 @@
 
 	<script>
 		function sendMessage(from, name, subject, msg) {
-			to = 'moctarjallo@gmail.com'
-			alert(name + " said " + msg + " to " + to + " with subject " + subject)
+			let body = msg + '%0D%0A%0D%0A' + name + '%0D%0A' + from
+			window.open('mailto:moctarjallo@gmail.com?subject='+subject+'&body='+body);
 		}
 	</script>
 	
@@ -990,6 +990,9 @@
   <script src="js/scrollax.min.js"></script>
   
   <script src="js/main.js"></script>
+
+  <script src="https://smtpjs.com/v3/smtp.js">
+  </script>
     
   </body>
 </html>
