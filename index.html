@@ -58,6 +58,11 @@
 	    </div>
 	  </nav>
 	  <section class="hero-wrap js-fullheight">
+		<!-- <iframe 
+			id="video-background" 
+			src="videos/ai-background.mp4" 
+			frameborder="0" allowfullscreen autoplay>
+		</iframe> -->
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight justify-content-center align-items-center">
@@ -69,7 +74,7 @@
 								  <span
 								     class="txt-rotate"
 								     data-period="2000"
-								     data-rotate='["Data Scientist.", "Python Developer.", "Deep Learning Engineer.", "Entrepreneur.", "Freelancer." ]'></span>
+								     data-rotate='["Data Scientist.", "Deep Learning Engineer.", "Python Developer.", "Entrepreneur." ]'></span>
 								</h2>
 							</div>
             </div>
@@ -80,7 +85,7 @@
 				<a href="#" class="mouse-icon">
 					<div class="mouse-wheel"><span class="ion-ios-arrow-round-down"></span></div>
 				</a>
-			</div>
+			</div>		
     </section>
 
     <section class="ftco-about img ftco-section ftco-no-pt ftco-no-pb" id="about-section">
@@ -994,6 +999,23 @@
 
   <script src="https://smtpjs.com/v3/smtp.js">
   </script>
-    
+    <script>
+		// Get the video
+		var video = document.getElementById("myVideo");
+		
+		// Get the button
+		var btn = document.getElementById("myBtn");
+		
+		// Pause and play the video, and change the button text
+		function myFunction() {
+		  if (video.paused) {
+			video.play();
+			btn.innerHTML = "Pause";
+		  } else {
+			video.pause();
+			btn.innerHTML = "Play";
+		  }
+		}
+		</script>
   </body>
 </html>
