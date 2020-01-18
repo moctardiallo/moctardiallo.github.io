@@ -1,0 +1,433 @@
+
+<div>
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dans ce poste nous allons extraire les donnees du site web <code>seneweb</code> grace a une framework python qui s'appelle <code>scrapy</code>, le tout sur un <code>google colab</code></p>
+<p>A la fin de cette lecture vous comprendrez comment utiliser facilement <code>scrapy</code> sur une <code>notebook python</code> et extraire les donnees de n'importe quelle site web, tres facilement.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h1><p>Pour installer Scrapy sous <strong>google colab</strong> taper les commandes suivantes:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip install scrapy
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pour verifier si l'installation a fonctionne taper les instructions python suivantes</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1.8.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Scrapy est un framework python qui permet d'extraire des données structurées trouvées dans des sites web.
+Nous allons utiliser Scrapy pour extraire les articles publies dans les sites web senegalais comme seneweb.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Creer-un-spider-basique">Creer un spider basique<a class="anchor-link" href="#Creer-un-spider-basique">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Scrapy possede ce que l'on appelle des <strong>spiders</strong>. Un spider est un programme ecrit avec la librairie Scrapy qui permet de se connecter a un <strong>url</strong> et extraire du contenu specifique de la page de cette url. En voici un example:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Dans cette section nous allons creer un <strong>spider</strong> basique qui retourne une reponse valable.
+Un spider consiste en une classe qui herite de la classe <strong>scrapy.Spider</strong> qui nous offre les fonctionaliltes de <strong>connection</strong> et d'<strong>extraction</strong> de donnees d'une page web. Cette contient contient particulierement la methode <strong>parse</strong> dans laquelle nous allons specifier exactement quelle partie d'une page web nous voulons extraire.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span>
+
+<span class="k">class</span> <span class="nc">ArticleSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;articles&#39;</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;https://seneweb.com/news/Contribution/taxation-des-gafam-quelles-perspectives-_n_306577.html&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+      <span class="n">page_web</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">&quot;html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AFFICHONS LA PAGE WEB&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="n">page_web</span><span class="p">)</span>
+      <span class="k">yield</span> <span class="p">{</span>
+            <span class="s2">&quot;page_web&quot;</span><span class="p">:</span> <span class="n">page_web</span><span class="p">,</span>
+             <span class="p">}</span>
+
+<span class="c1"># Execution</span>
+<span class="kn">from</span> <span class="nn">scrapy.crawler</span> <span class="k">import</span> <span class="n">CrawlerProcess</span>
+
+<span class="n">process</span> <span class="o">=</span> <span class="n">CrawlerProcess</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;FEED_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FEED_URI&#39;</span><span class="p">:</span> <span class="s1">&#39;items.json&#39;</span>
+<span class="p">})</span>
+
+<span class="n">process</span><span class="o">.</span><span class="n">crawl</span><span class="p">(</span><span class="n">ArticleSpider</span><span class="p">)</span>
+<span class="n">process</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="La-methode-parse(self,-response)">La methode <em>parse(self, response)</em><a class="anchor-link" href="#La-methode-parse(self,-response)">&#182;</a></h2><p>Premier constat, la methode</p>
+
+<pre><code>parse(self, response)
+
+</code></pre>
+<p>prend comme argument l'object <strong>response</strong> et doit retourner un <strong>dictionnaire</strong> avec le <strong>keyword</strong> <strong>yield</strong>.
+En Python le keyword <strong>yield</strong> est utilise pour generer au fur et a mesure un object retourne. Il est utilise ici parceque la classe qui se connecte au site web extraie les donnnees au fur et et a mesure qu'elle les rencontre.
+Le type de l'object retourne egalement est toujours un dictionnaire qui contient des <strong>key</strong>, chaque <strong>key</strong> avec sa <strong>valeur</strong>. Cela pourra etre ainsi par exemple un <strong>titre</strong> de l'article et la la valeur de ce tire a savoir le <strong>text</strong></p>
+
+<pre><code>yield {
+    "titre": Titre de l'article
+}</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Les-selecteurs-CSS">Les selecteurs CSS<a class="anchor-link" href="#Les-selecteurs-CSS">&#182;</a></h2><p>Dans la methode <strong>parse</strong> nous avons l'objet <strong>response</strong> retourne par la classe <strong>ArticleSpider</strong> une fois qu'elle est connecte au site.</p>
+<p>Que contient cet objet?</p>
+<p>L'objet <strong>response</strong> contient toutes les informations de la page web, sous le format <strong>html</strong>. Enfait la page web sous sa forme code source est elle-meme retournee comme on peut le voir en executant le code ci-dessus.</p>
+<p>Mais nous avons besoins uniquement de certaines parties de cette page.
+Pour ce faire nous allons utiliser des <strong>selecteurs css</strong></p>
+
+<pre><code>response.css("html")
+
+</code></pre>
+<p>La chaine de caracteres entre les parentheses est un selecteur css.</p>
+<p>Un sélecteur CSS peut être défini comme étant une chaîne de caractères (ensemble de mots-clés et/ou de symboles), qui permet d'identifier les éléments qui vont profiter du <strong><em>style CSS</em></strong>. Chaque sélecteur pointe vers un endroit précis de la page Web.</p>
+<p><img src='/content/drive/My Drive/data/seneweb/selecteur.png'></p>
+<p>Dans notre exemple en haut nous avons choisi le selecteur <code>html</code> pour specifier que nous voulons toute la partie de la page web comprise les tag <code>&lt;html&gt; &lt;/html&gt;</code>.</p>
+<p>Pour un cours detaille sur les selecteurs css veuillez suivre ce lien <a href="https://www.w3schools.com/cssref/css_selectors.asp">https://www.w3schools.com/cssref/css_selectors.asp</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Execution">Execution<a class="anchor-link" href="#Execution">&#182;</a></h2><p>Usuellement les <code>spiders</code> sont executes a l'aide d'une commande <code>scrapy crawl spider.py</code> lorsque scrapy est installe localement en tant que framework.
+Ici nous voulons exectuter notre spider directement dans le <code>google colab</code>; pour cela nous allons faire appel directement au code source qui est utilise par cette commande: la classe <code>CrawlerProcess</code>.</p>
+
+<pre><code># Execution
+from scrapy.crawler import CrawlerProcess
+
+process = CrawlerProcess(settings={
+    'FEED_FORMAT': 'json',
+    'FEED_URI': 'items.json'
+})
+
+process.crawl(ArticleSpider)
+process.start()
+
+</code></pre>
+<p>la classe <code>CrawlerProcess</code> recoit <code>settings</code> comme l'un de ses arguments lors de l'instantiations. Ici nous indiquons que nous voulons retourner les donnees sous le format <code>json</code> avec le <code>key</code> <code>FEED_FORMAT</code>.
+Nous utilisons ensuite ce <code>processus</code> cree pour executer notre programme dans la classe <code>ArticleSpider</code>
+Pour plus d'info, voir l'api de la classe ici:</p>
+<p><a href="https://docs.scrapy.org/en/latest/topics/api.html#scrapy.crawler.CrawlerProcess">https://docs.scrapy.org/en/latest/topics/api.html#scrapy.crawler.CrawlerProcess</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Extraction-des-articles">Extraction des articles<a class="anchor-link" href="#Extraction-des-articles">&#182;</a></h1><p>Dans la partie precedente nous avons vu comment fonctionne basiquement et de facon generale la notion de <code>web crawling</code> avec <code>scrapy</code></p>
+<p>Dans cette partie nous allons utiliser ce que nous avons appris dans la partie precedente pour extraire un les elements qui nous interessent dans une page web</p>
+<p>Pour cela la seule partie que nous allons essentiellement changer du code precedent est le code de la methode <code>parse(self, response)</code> ou nous allons justement specifier les donnees que nous voulons extraire grace a des selecteurs css.</p>
+<p>Nous avions vu comment utiliser les selecteurs css pour faire de telles specifications, mais en meme temps cela semble une tache penible a faire a la main: il faudrait inspecter une page web a la main a chaque fois pour trouver le selecteur specifique correspondant a une donnee specifique de la page.</p>
+<p>Pour faciliter la tache il existe un plug-in de chrome qui s'appelle <code>SelectorGadget</code> qu'on peut installer et utiliser pour faire ce travail automatiquement, tout en connaissant tres peu sur les selecteurs css.</p>
+<p>Lien d'installation de <code>SelectorGadget</code>:
+<a href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb">https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb</a> ainsi que l'explication de comment l'utiliser: l'utilisation est tres basique.</p>
+<p>En utilisant ce gadget nous sommes arrives a specifier les donnees de la page web que nous voulons a savoir</p>
+<ul>
+<li>le titre de l'article</li>
+<li>le contenu text de l'article</li>
+<li>la date de creation de l'article</li>
+<li><p>le nombre de commentaires obtenu par l'article</p>
+
+<pre><code>def parse(self, response):
+  titre = response.css('h1::text')[0].extract()
+  paragraphes = response.css("div:nth-child(25)::text , div:nth-child(23)::text ,div:nth-child(19)::text, div:nth-child(17)::text, div:nth-child(15)::text , div:nth-child(13) b::text , div:nth-child(11)::text , br+ div::text").extract()
+  contenu = ''.join(paragraphes).rstrip('\n')
+  date_creation = response.css('.meta_source+ .meta_item::text').get()
+  commentaires_text = response.css('span:nth-child(4)::text').extract()[0]
+  nombre_commentaires = ''.join(list(filter(lambda n: n.isdigit(), commentaires_text)))
+
+  yield {
+      "titre": titre,
+      "contenu": contenu,
+      "date_creation": date_creation,
+      "nombre_commentaires": nombre_commentaires,
+  }</code></pre>
+</li>
+</ul>
+<p>Voici donc le code final pour <code>scraper</code> une page web</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span>
+
+<span class="k">class</span> <span class="nc">ArticleSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;articles&#39;</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;https://seneweb.com/news/Contribution/taxation-des-gafam-quelles-perspectives-_n_306577.html&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+      <span class="n">titre</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;h1::text&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+      <span class="n">paragraphes</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">&quot;div:nth-child(25)::text , div:nth-child(23)::text ,div:nth-child(19)::text, div:nth-child(17)::text, div:nth-child(15)::text , div:nth-child(13) b::text , div:nth-child(11)::text , br+ div::text&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+      <span class="n">contenu</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paragraphes</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+      <span class="n">date_creation</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;.meta_source+ .meta_item::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+      <span class="n">commentaires_text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;span:nth-child(4)::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">nombre_commentaires</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">isdigit</span><span class="p">(),</span> <span class="n">commentaires_text</span><span class="p">)))</span>
+
+      <span class="k">yield</span> <span class="p">{</span>
+          <span class="s2">&quot;titre&quot;</span><span class="p">:</span> <span class="n">titre</span><span class="p">,</span>
+          <span class="s2">&quot;contenu&quot;</span><span class="p">:</span> <span class="n">contenu</span><span class="p">,</span>
+          <span class="s2">&quot;date_creation&quot;</span><span class="p">:</span> <span class="n">date_creation</span><span class="p">,</span>
+          <span class="s2">&quot;nombre_commentaires&quot;</span><span class="p">:</span> <span class="n">nombre_commentaires</span><span class="p">,</span>
+      <span class="p">}</span>
+
+<span class="c1"># Execution</span>
+<span class="kn">from</span> <span class="nn">scrapy.crawler</span> <span class="k">import</span> <span class="n">CrawlerProcess</span>
+
+<span class="n">process</span> <span class="o">=</span> <span class="n">CrawlerProcess</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;FEED_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FEED_URI&#39;</span><span class="p">:</span> <span class="s1">&#39;items.json&#39;</span>
+<span class="p">})</span>
+
+<span class="n">process</span><span class="o">.</span><span class="n">crawl</span><span class="p">(</span><span class="n">ArticleSpider</span><span class="p">)</span>
+<span class="n">process</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Extraire-les-liens-des-pages-suivantes">Extraire les liens des pages suivantes<a class="anchor-link" href="#Extraire-les-liens-des-pages-suivantes">&#182;</a></h1><p>Jusqu'a present nous avons vu uniquement comment extraire les donnees d'une seule page web. Mais toute la magie de <code>scrapy</code> reside sur la capacite a suivre automatiquement les autres liens sur les autres pages web pour y continuer encore le travail d'extraction.</p>
+<p>Dans cette partie nous allons voir comment le faire.</p>
+<p>Toujours grace aux selecteurs css nous pouvons localiser liens vers les autres pages et y continuer le <code>scraping</code>.</p>
+<p>Voici le code selecteur css qui nous permet de le faire:</p>
+
+<pre><code>  next_pages = response.css('.module_related_post_title::attr(href)').extract() 
+
+</code></pre>
+<p>Une fois donc que nous recevons ces liens vers d'autres pages du site, nous appellons une commande simple de l'objet <strong>response</strong>:</p>
+
+<pre><code>for next_page in next_pages:
+  response.follow(next_page, callback=self.parse)
+
+</code></pre>
+<p>Ici nous sommes entrain d'iterer sur tous les liens trouves dans la page web et y appler encore la methode <code>parse</code> sous la forme d'un <code>callback</code> pour la methode <code>response.follow()</code>.</p>
+<p>Ce code permet ainis de suivre continuellement les liens vers d'autres pages visibles sur une page.</p>
+<p>Alors comme on peut se l'imaginer, il peut arriver ou une page ne contient pas de liens suivants. Dans ce cas on fait un petit test pour se l'assurer et eviter que notre crash.</p>
+
+<pre><code>if next_pages is not None:
+
+</code></pre>
+<p>Voici donc le code complet pour extraire les donnees d'un site web d'information comme seneweb.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span>
+
+<span class="k">class</span> <span class="nc">ArticleSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;articles&#39;</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;https://seneweb.com/news/Contribution/taxation-des-gafam-quelles-perspectives-_n_306577.html&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+      <span class="n">titre</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;h1::text&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+      <span class="n">paragraphes</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s2">&quot;div:nth-child(25)::text , div:nth-child(23)::text ,div:nth-child(19)::text, div:nth-child(17)::text, div:nth-child(15)::text , div:nth-child(13) b::text , div:nth-child(11)::text , br+ div::text&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+      <span class="n">contenu</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paragraphes</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+      <span class="n">date_creation</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;.meta_source+ .meta_item::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+      <span class="n">commentaires_text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;span:nth-child(4)::text&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">nombre_commentaires</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">isdigit</span><span class="p">(),</span> <span class="n">commentaires_text</span><span class="p">)))</span>
+
+      <span class="k">yield</span> <span class="p">{</span>
+          <span class="s2">&quot;titre&quot;</span><span class="p">:</span> <span class="n">titre</span><span class="p">,</span>
+          <span class="s2">&quot;contenu&quot;</span><span class="p">:</span> <span class="n">contenu</span><span class="p">,</span>
+          <span class="s2">&quot;date_creation&quot;</span><span class="p">:</span> <span class="n">date_creation</span><span class="p">,</span>
+          <span class="s2">&quot;nombre_commentaires&quot;</span><span class="p">:</span> <span class="n">nombre_commentaires</span><span class="p">,</span>
+      <span class="p">}</span>
+
+      <span class="n">next_pages</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">css</span><span class="p">(</span><span class="s1">&#39;.module_related_post_title::attr(href)&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span> 
+      <span class="k">if</span> <span class="n">next_pages</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">next_page</span> <span class="ow">in</span> <span class="n">next_pages</span><span class="p">:</span>
+          <span class="k">yield</span> <span class="n">response</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="n">next_page</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">)</span>
+
+<span class="c1"># Execution</span>
+<span class="kn">from</span> <span class="nn">scrapy.crawler</span> <span class="k">import</span> <span class="n">CrawlerProcess</span>
+
+<span class="n">process</span> <span class="o">=</span> <span class="n">CrawlerProcess</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;FEED_FORMAT&#39;</span><span class="p">:</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FEED_URI&#39;</span><span class="p">:</span> <span class="s1">&#39;items.json&#39;</span>
+<span class="p">})</span>
+
+<span class="n">process</span><span class="o">.</span><span class="n">crawl</span><span class="p">(</span><span class="n">ArticleSpider</span><span class="p">)</span>
+<span class="n">process</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ce spider se connecte a l'url <strong><a href="https://seneweb.com/news/Contribution/taxation-des-gafam-quelles-perspectives-_n_306577.html">https://seneweb.com/news/Contribution/taxation-des-gafam-quelles-perspectives-_n_306577.html</a></strong> et extraie</p>
+<ul>
+<li>le titre de l'article</li>
+<li>son contenu</li>
+<li>sa date de creation</li>
+<li>le nombre de commentaires</li>
+</ul>
+<p>et procede de meme pour les articles suivants</p>
+<p>Dans une prochaine section nous verrons comment utiliser <strong>tensorflow</strong> pour determiner le <strong>topic</strong> d'un article particulier.</p>
+<p>L'idee est de repondre a notre question de depart en repondant a deux questions plus primitives:</p>
+<ol>
+<li>Combien d'articles publies parlent d'un topic particulier parmi les tops 10</li>
+<li>Combien de commentaires totaux d'articles correspondent a un topic particulier.</li>
+</ol>
+<p>La date de creation de l'article nous permettra de fixer l'<strong>age</strong> de reference des articles. En effet le nombre de commentaires d'un articles peut varier suivant l'age de cet article. Pour ainsi effectuer une mesure juste il faudra considerer uniquement les articles qui ont le meme age.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Suite">Suite<a class="anchor-link" href="#Suite">&#182;</a></h1><p>Dans la suite nous pouvons decider de soit:</p>
+<ul>
+<li>stocker ces donnees dans un fichier <code>json</code> ou une base de donnees</li>
+<li>faire une analyse de ces donnees au meme moment qu'elles arrivent</li>
+</ul>
+<p>Cela fera l'objet d'un autre blog.</p>
+<p>Merci d'avoir ete attentifs.
+Vos suggessions et questions sont les bienvenues!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+</div>
+
+ 
+
+
+</html>
