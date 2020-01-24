@@ -1,4 +1,4 @@
-const cafeList = document.querySelector('#cafe-list');
+const comments = document.querySelector('#comments');
 const form = document.querySelector('#add-cafe-form');
 
 // create element & render cafe
@@ -20,7 +20,7 @@ function renderComment(doc){
     li.appendChild(date);
     li.appendChild(cross);
 
-    cafeList.appendChild(li);
+    comments.appendChild(li);
 
     // deleting data
     cross.addEventListener('click', (e) => {
@@ -56,8 +56,8 @@ db.collection('comments').orderBy('date').onSnapshot(snapshot => {
         if(change.type == 'added'){
             renderComment(change.doc);
         } else if (change.type == 'removed'){
-            let li = cafeList.querySelector('[data-id=' + change.doc.id + ']');
-            cafeList.removeChild(li);
+            let li = comments.querySelector('[data-id=' + change.doc.id + ']');
+            comments.removeChild(li);
         }
     });
 });
