@@ -1,7 +1,15 @@
 <html>
     <head>
-        <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-firestore.js"></script>
+        <!-- <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-firestore.js"></script> -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script>
+
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
@@ -21,18 +29,19 @@
         </div>
 
         <script>
-            // Initialize Firebase
-            var config = {
-                apiKey: "AIzaSyBrItE-kYM4dU0kaft7WYjb3749lCv42uA",
-                authDomain: "ninja-firestore.firebaseapp.com",
-                databaseURL: "https://ninja-firestore.firebaseio.com",
-                projectId: "ninja-firestore",
-                storageBucket: "ninja-firestore.appspot.com",
-                messagingSenderId: "176079657618"
+            const firebaseConfig = {
+            apiKey: "AIzaSyCULjspK0cmjpLt-3XhdEOwHP4yhtj7wEY",
+            authDomain: "moctardiallo-9e436.firebaseapp.com",
+            databaseURL: "https://moctardiallo-9e436.firebaseio.com",
+            projectId: "moctardiallo-9e436",
+            storageBucket: "moctardiallo-9e436.appspot.com",
+            messagingSenderId: "51306489876",
+            appId: "1:51306489876:web:0f9a88c1288328d70edf01",
+            measurementId: "G-RYMTQDJGC3"
             };
-            firebase.initializeApp(config);
+            firebase.initializeApp(firebaseConfig); 
             const db = firebase.firestore();
-            db.settings({ timestampsInSnapshots: true }); 
+            firebase.analytics();
         </script>
         <script src="app.js"></script>
     </body>
