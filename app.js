@@ -40,14 +40,20 @@ function renderComment(doc){
 // saving data
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    db.collection('cafes').add({
-        name: form.name.value,
-        city: form.city.value
+    db.collection('comments').add({
+        author: form.author.value,
+        date: "SEPT. 12, 2019 AT 2:21PM",
+        content: form.content.value,
+        website: form.website.value,
+        email: form.email.value
     });
-    form.name.value = '';
-    form.city.value = '';
+    form.author.value = '';
+    form.content.value = '';
+    form.website.value = '';
+    form.email.value = '';
 });
 
+// Get data 
 // real-time listener
 db.collection('comments').orderBy('date').onSnapshot(snapshot => {
     let changes = snapshot.docChanges();
