@@ -4,44 +4,48 @@ const form = document.querySelector('#add-comment-form');
 // create element & render comment
 function renderComment(doc){
    
-    // var element = document.getElementById("myDIV");
-    // comments.classList.add("comment-list");
-
-    let li = document.createElement('li');
-    li.setAttribute('data-id', doc.id);
-    li.classList.add('comment');
-        let vcardbio = document.createElement('div');
-        vcardbio.classList.add('vcard', 'bio')
-            let img = document.createElement('img')
-            img.setAttribute('src', 'images/person_1.jpg')
-            img.setAttribute('alt', 'Image placeholder')
-            vcardbio.appendChild(img)
-        li.appendChild(vcardbio)
-        let commentBody = document.createElement('div');
-            commentBody.classList.add('comment-body')
-            let author = document.createElement('h3');
-            author.textContent = doc.data().author
-            commentBody.appendChild(author)
-            let date = document.createElement('div')
-            date.classList.add('meta')
-            date.textContent = doc.data().date;
-            commentBody.appendChild(date)
-            let content = document.createElement('p');
-            content.textContent = doc.data().content;
-            commentBody.appendChild(content)
-            let reply_p = document.createElement('p');
-                let reply = document.createElement('a');
-                reply.setAttribute('href', '#')
-                reply.classList.add('reply')
-                reply.textContent = 'Reply'
-                reply_p.appendChild(reply)
-            commentBody.appendChild(reply_p)
+    ul = document.createElement('ul')
+    ul.classList.add('comment-list')
+        let li = document.createElement('li');
+        li.setAttribute('data-id', doc.id);
+        li.classList.add('comment');
+            let vcardbio = document.createElement('div');
+            vcardbio.classList.add('vcard', 'bio')
+                let img = document.createElement('img')
+                img.setAttribute('src', 'images/person_1.jpg')
+                img.setAttribute('alt', 'Image placeholder')
+                vcardbio.appendChild(img)
+            li.appendChild(vcardbio)
+            let commentBody = document.createElement('div');
+                commentBody.classList.add('comment-body')
+                let author = document.createElement('h3');
+                author.textContent = doc.data().author
+                commentBody.appendChild(author)
+                let date = document.createElement('div')
+                date.classList.add('meta')
+                date.textContent = doc.data().date;
+                commentBody.appendChild(date)
+                let content = document.createElement('p');
+                content.textContent = doc.data().content;
+                commentBody.appendChild(content)
+                let reply_p = document.createElement('p');
+                    let reply = document.createElement('a');
+                    reply.setAttribute('href', '#')
+                    reply.classList.add('reply')
+                    reply.textContent = 'Reply'
+                    reply_p.appendChild(reply)
+                commentBody.appendChild(reply_p)
+                let cross = document.createElement('div');
         li.appendChild(commentBody)
-
-    let cross = document.createElement('div');
-
-    comments.appendChild(li);
-
+    ul.appendChild(li)
+    
+    // Where to append the comment, depending on which comment it is a
+    // reply for.
+    // if it is a reply to a comment then get the parent id and this as a child
+    // otherwise append it to comments variable
+    // this is going be a recursive algorithm maybe or not.
+    comments.appendChild(ul);
+        
     // deleting data
     cross.addEventListener('click', (e) => {
         e.stopPropagation();
