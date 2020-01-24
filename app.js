@@ -1,7 +1,7 @@
 const comments = document.querySelector('#comments');
-const form = document.querySelector('#add-cafe-form');
+const form = document.querySelector('#add-comment-form');
 
-// create element & render cafe
+// create element & render comment
 function renderComment(doc){
     let li = document.createElement('li');
     let author = document.createElement('span');
