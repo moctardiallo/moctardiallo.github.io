@@ -17,15 +17,35 @@ window.addEventListener('load', function() {
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.drawImage(img, 0, 0, img.width, img.height);
+    pose = [
+      {
+        'part': "leftShoulder",
+        'position': {
+          'x': 110,
+          'y': 250
+        }
+      },
+      {
+        'part': "leftElbow",
+        'position': {
+          'x': 130,
+          'y': 130
+        }
+      }
+    ]
+    drawPose(ctx, pose)
+
+    var dataurl = canvas.toDataURL("image/png");
+    img.src = dataurl;
+  }
+
+  function drawPose(ctx, pose) {
     ctx.beginPath();
-    ctx.moveTo(110, 250);
-    ctx.lineTo(130, 130);
+    ctx.moveTo(pose[0]['position']['x'], pose[0]['position']['y']);
+    ctx.lineTo(pose[1]['position']['x'], pose[1]['position']['y']);
     ctx.lineWidth = 3;
 
     // set line color
     ctx.strokeStyle = '#0000ff';
     ctx.stroke();
-
-    var dataurl = canvas.toDataURL("image/png");
-    img.src = dataurl;
   }
