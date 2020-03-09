@@ -9,43 +9,23 @@ window.addEventListener('load', function() {
   });
   
   function imageIsLoaded() { 
-    // alert(this.src);  // blob url
-    // update width and height ...
     var canvas = document.createElement("canvas");
-        //var canvas = $("<canvas>", {"id":"testing"})[0];
-        var img = document.getElementById('your_image');  // $('img')[0]
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
+    var img = document.getElementById('your_image');
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
 
-        var MAX_WIDTH = 400;
-        var MAX_HEIGHT = 300;
-        var width = img.width;
-        var height = img.height;
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    ctx.beginPath();
+    ctx.moveTo(110, 250);
+    ctx.lineTo(130, 130);
+    ctx.lineWidth = 3;
 
-        // if (width > height) {
-        //   if (width > MAX_WIDTH) {
-        //     height *= MAX_WIDTH / width;
-        //     width = MAX_WIDTH;
-        //   }
-        // } else {
-        //   if (height > MAX_HEIGHT) {
-        //     width *= MAX_HEIGHT / height;
-        //     height = MAX_HEIGHT;
-        //   }
-        // }
-        canvas.width = width;
-        canvas.height = height;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
-        ctx.beginPath();
-        ctx.moveTo(110, 250);
-        ctx.lineTo(130, 130);
-        ctx.lineWidth = 3;
+    // set line color
+    ctx.strokeStyle = '#0000ff';
+    ctx.stroke();
 
-        // set line color
-        ctx.strokeStyle = '#0000ff';
-        ctx.stroke();
-
-        var dataurl = canvas.toDataURL("image/png");
-        img.src = dataurl;
+    var dataurl = canvas.toDataURL("image/png");
+    img.src = dataurl;
   }
