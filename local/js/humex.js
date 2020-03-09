@@ -33,16 +33,27 @@ window.addEventListener('load', function() {
         }
       }
     ]
-    drawPose(ctx, pose)
+    drawMeasure(ctx, pose)
 
     var dataurl = canvas.toDataURL("image/png");
     img.src = dataurl;
   }
 
-  function drawPose(ctx, pose) {
+  function drawMeasure(ctx, pose) {
+    let x0, y0, x1, y1;
+    for (p of pose) {
+      if (p['part'] == 'leftShoulder'){
+        x0 = p['position']['x']
+        y0 = p['position']['y']
+      }
+      if (p['part'] == 'leftElbow'){
+        x1 = p['position']['x']
+        y1 = p['position']['y']
+      }
+    }
     ctx.beginPath();
-    ctx.moveTo(pose[0]['position']['x'], pose[0]['position']['y']);
-    ctx.lineTo(pose[1]['position']['x'], pose[1]['position']['y']);
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1, y1);
     ctx.lineWidth = 3;
 
     // set line color
