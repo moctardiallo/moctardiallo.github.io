@@ -28,22 +28,22 @@ async function imageIsLoaded() {
   const pose = await net.estimateSinglePose(img, {
     flipHorizontal: false
   });
-  const measure = getMeasure(pose['keypoints'], 'rightArm')
+  const measure = getMeasure(pose['keypoints'], ['rightArm'])
   drawMeasure(ctx, measure)
 
   var dataurl = canvas.toDataURL("image/png");
   img.src = dataurl;
 }
 
-function getPoints(bodyPart){
+function getPoints(bodyParts){
   const body = {
     'rightArm': ['rightShoulder', 'rightElbow']
   }
-  return body[bodyPart]
+  return body[bodyParts[0]]
 }
 
-function getMeasure(keypoints, bodyPart){
-  const bodyPartPoints = getPoints(bodyPart)
+function getMeasure(keypoints, bodyParts){
+  const bodyPartPoints = getPoints(bodyParts)
   let x0, y0, x1, y1;
   for (p of keypoints) {
     if (p['part'] == bodyPartPoints[0]){
