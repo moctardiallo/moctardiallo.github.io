@@ -8,7 +8,7 @@ window.addEventListener('load', function() {
     });
   });
   
-  function imageIsLoaded() { 
+  async function imageIsLoaded() { 
     var canvas = document.createElement("canvas");
     var img = document.getElementById('your_image');
     var ctx = canvas.getContext("2d");
@@ -17,31 +17,36 @@ window.addEventListener('load', function() {
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.drawImage(img, 0, 0, img.width, img.height);
-    pose = [
-      {
-        'part': "leftShoulder",
-        'position': {
-          'x': 110,
-          'y': 250
-        }
-      },
-      {
-        'part': "leftElbow",
-        'position': {
-          'x': 130,
-          'y': 130
-        }
-      }
-    ]
-    drawMeasure(ctx, pose)
+    // pose = [
+    //   {
+    //     'part': "leftShoulder",
+    //     'position': {
+    //       'x': 110,
+    //       'y': 250
+    //     }
+    //   },
+    //   {
+    //     'part': "leftElbow",
+    //     'position': {
+    //       'x': 130,
+    //       'y': 130
+    //     }
+    //   }
+    // ]
+    const net = await posenet.load();
+    const pose = await net.estimateSinglePose(img, {
+      flipHorizontal: false
+    });
+    // console.log("keypoints:", pose['keypoints'])
+    drawMeasure(ctx, pose['keypoints'])
 
     var dataurl = canvas.toDataURL("image/png");
     img.src = dataurl;
   }
 
-  function drawMeasure(ctx, pose) {
+  function drawMeasure(ctx, keypoints) {
     let x0, y0, x1, y1;
-    for (p of pose) {
+    for (p of keypoints) {
       if (p['part'] == 'leftShoulder'){
         x0 = p['position']['x']
         y0 = p['position']['y']
