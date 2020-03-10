@@ -28,41 +28,66 @@ async function imageIsLoaded() {
   const pose = await net.estimateSinglePose(img, {
     flipHorizontal: false
   });
-  const measure = getMeasure(pose['keypoints'], ['rightArm'])
-  drawMeasure(ctx, measure)
+  const bodyPartsCoordinates = getBodyPartsCoordinates(pose['keypoints'], ['rightArm'])
+  drawBodyPart(ctx, bodyPartsCoordinates)
 
   var dataurl = canvas.toDataURL("image/png");
   img.src = dataurl;
 }
 
-function getPoints(bodyParts){
-  const body = {
+// bodyParts: a list of body parts: ['rightArm', ...]
+// returns an object of bodyPartsPoints corresponding to body parts: 
+// {
+//   'rightArm:' ['rightShoulder', 'rightElbow'], //e.g.: rigthShoulder is a point.
+//   ...
+// }
+function getBodyPartsPoints(bodyParts){
+  const bodyPartsPoints = {
     'rightArm': ['rightShoulder', 'rightElbow']
   }
-  return body[bodyParts[0]]
+  return Object.assign({}, ...bodyParts.map(bp => bodyPartsPoints.hasOwnProperty(bp) ? ({[bp]: bodyPartsPoints[bp]}) : null));
 }
 
-function getMeasure(keypoints, bodyParts){
-  const bodyPartPoints = getPoints(bodyParts)
-  let x0, y0, x1, y1;
+// keypoints: from posenet inference: [{
+//                                       'part': 'rightShoulder', // == bodyPoint
+//                                       'position': {
+//                                         'x': 130,
+//                                         'y': 113,
+//                                       }
+//                                     },
+//                                     ...
+//                                     ]
+// bodyParts: a list of body parts: ['rightArm', ...]
+// returns a list of coordinates corresponding to each body part specified in bodyParts list 
+function getBodyPartsCoordinates(keypoints, bodyParts){
+  const bodyPartsPoints = getBodyPartsPoints(bodyParts)
+  let x0, y0, x1, y1; // coordinates
   for (p of keypoints) {
-    if (p['part'] == bodyPartPoints[0]){
+    if (p['part'] == bodyPartsPoints['rightArm'][0]){
       x0 = p['position']['x']
       y0 = p['position']['y']
     }
-    if (p['part'] == bodyPartPoints[1]){
+    if (p['part'] == bodyPartsPoints['rightArm'][1]){
       x1 = p['position']['x']
       y1 = p['position']['y']
     }
 
   }
-  return [x0, y0, x1, y1]
+  return {
+    'rightArm': [x0, y0, x1, y1]
+  }
 }
 
-function drawMeasure(ctx, measure) {
+// bodyPartsCoordinates: a list of 4 points corresponding to the coordinates of a body part
+// draws a segment between those two points
+function drawBodyPart(ctx, bodyPartsCoordinates) {
+  const x0 = bodyPartsCoordinates['rightArm'][0]
+  const y0 = bodyPartsCoordinates['rightArm'][1]
+  const x1 = bodyPartsCoordinates['rightArm'][2]
+  const y1 = bodyPartsCoordinates['rightArm'][3]
   ctx.beginPath();
-  ctx.moveTo(measure[0], measure[1]);
-  ctx.lineTo(measure[2], measure[3]);
+  ctx.moveTo(x0, y0);
+  ctx.lineTo(x1, y1);
   ctx.lineWidth = 3;
 
   // set line color
