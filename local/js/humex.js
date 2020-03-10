@@ -28,13 +28,14 @@ async function imageIsLoaded() {
   const pose = await net.estimateSinglePose(img, {
     flipHorizontal: false
   });
-  drawMeasure(ctx, pose['keypoints'])
+  const measure = getMeasure(pose['keypoints'])
+  drawMeasure(ctx, measure)
 
   var dataurl = canvas.toDataURL("image/png");
   img.src = dataurl;
 }
 
-function drawMeasure(ctx, keypoints) {
+function getMeasure(keypoints){
   let x0, y0, x1, y1;
   for (p of keypoints) {
     if (p['part'] == 'rightShoulder'){
@@ -46,21 +47,14 @@ function drawMeasure(ctx, keypoints) {
       y1 = p['position']['y']
     }
 
-    if (p['part'] == 'leftWrist'){
-      x2 = p['position']['x']
-      y2 = p['position']['y']
-    }
-    if (p['part'] == 'leftKnee'){
-      x3 = p['position']['x']
-      y3 = p['position']['y']
-    }
-
   }
+  return [x0, y0, x1, y1]
+}
+
+function drawMeasure(ctx, measure) {
   ctx.beginPath();
-  ctx.moveTo(x0, y0);
-  ctx.lineTo(x1, y1);
-  ctx.moveTo(x2, y2);
-  ctx.lineTo(x3, y3);
+  ctx.moveTo(measure[0], measure[1]);
+  ctx.lineTo(measure[2], measure[3]);
   ctx.lineWidth = 3;
 
   // set line color
