@@ -28,8 +28,8 @@ async function imageIsLoaded() {
   const pose = await net.estimateSinglePose(img, {
     flipHorizontal: false
   });
-  const bodyPartsCoordinates = getBodyPartsCoordinates(pose['keypoints'], ['rightArm'])
-  drawBodyPart(ctx, bodyPartsCoordinates)
+  const bodyPartsCoordinates = getBodyPartsCoordinates(pose['keypoints'], ['rightArm', 'leftThigh'])
+  drawBodyParts(ctx, bodyPartsCoordinates)
 
   var dataurl = canvas.toDataURL("image/png");
   img.src = dataurl;
@@ -43,7 +43,8 @@ async function imageIsLoaded() {
 // }
 function getBodyPartsPoints(bodyParts){
   const bodyPartsPoints = {
-    'rightArm': ['rightShoulder', 'rightElbow']
+    'rightArm': ['rightShoulder', 'rightElbow'],
+    'leftThigh': ['leftHip', 'leftKnee']
   }
   return Object.assign({}, ...bodyParts.map(bp => bodyPartsPoints.hasOwnProperty(bp) ? ({[bp]: bodyPartsPoints[bp]}) : null));
 }
@@ -81,7 +82,7 @@ function getBodyPartsCoordinates(keypoints, bodyParts){
 
 // bodyPartsCoordinates: a {bodyPart: [list of 4 coordinates]} corresponding to the coordinates of a body parts
 // draws a segment between those two points
-function drawBodyPart(ctx, bodyPartsCoordinates) {
+function drawBodyParts(ctx, bodyPartsCoordinates) {
   for (bp in bodyPartsCoordinates){
     const x0 = bodyPartsCoordinates[bp][0]
     const y0 = bodyPartsCoordinates[bp][1]
