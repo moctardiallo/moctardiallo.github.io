@@ -79,19 +79,21 @@ function getBodyPartsCoordinates(keypoints, bodyParts){
   return bodyPartsCoordinates
 }
 
-// bodyPartsCoordinates: a list of 4 points corresponding to the coordinates of a body part
+// bodyPartsCoordinates: a {bodyPart: [list of 4 coordinates]} corresponding to the coordinates of a body parts
 // draws a segment between those two points
 function drawBodyPart(ctx, bodyPartsCoordinates) {
-  const x0 = bodyPartsCoordinates['rightArm'][0]
-  const y0 = bodyPartsCoordinates['rightArm'][1]
-  const x1 = bodyPartsCoordinates['rightArm'][2]
-  const y1 = bodyPartsCoordinates['rightArm'][3]
-  ctx.beginPath();
-  ctx.moveTo(x0, y0);
-  ctx.lineTo(x1, y1);
-  ctx.lineWidth = 3;
-
-  // set line color
-  ctx.strokeStyle = '#0000ff';
-  ctx.stroke();
+  for (bp in bodyPartsCoordinates){
+    const x0 = bodyPartsCoordinates[bp][0]
+    const y0 = bodyPartsCoordinates[bp][1]
+    const x1 = bodyPartsCoordinates[bp][2]
+    const y1 = bodyPartsCoordinates[bp][3]
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1, y1);
+    ctx.lineWidth = 3;
+  
+    // set line color
+    ctx.strokeStyle = '#0000ff';
+    ctx.stroke();
+  }
 }
