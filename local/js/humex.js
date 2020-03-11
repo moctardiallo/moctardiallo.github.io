@@ -62,20 +62,21 @@ function getBodyPartsPoints(bodyParts){
 function getBodyPartsCoordinates(keypoints, bodyParts){
   const bodyPartsPoints = getBodyPartsPoints(bodyParts)
   let x0, y0, x1, y1; // coordinates
-  for (p of keypoints) {
-    if (p['part'] == bodyPartsPoints['rightArm'][0]){
-      x0 = p['position']['x']
-      y0 = p['position']['y']
+  let bodyPartsCoordinates = {}
+  for (bp of bodyParts){
+    for (p of keypoints) {
+      if (p['part'] == bodyPartsPoints[bp][0]){
+        x0 = p['position']['x']
+        y0 = p['position']['y']
+      }
+      if (p['part'] == bodyPartsPoints[bp][1]){
+        x1 = p['position']['x']
+        y1 = p['position']['y']
+      }
     }
-    if (p['part'] == bodyPartsPoints['rightArm'][1]){
-      x1 = p['position']['x']
-      y1 = p['position']['y']
-    }
-
+    bodyPartsCoordinates[bp] = [x0, y0, x1, y1]
   }
-  return {
-    'rightArm': [x0, y0, x1, y1]
-  }
+  return bodyPartsCoordinates
 }
 
 // bodyPartsCoordinates: a list of 4 points corresponding to the coordinates of a body part
