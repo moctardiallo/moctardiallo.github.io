@@ -45,12 +45,26 @@ async function imageIsLoaded() {
 //   "bodyPart": 170cm,
 //   ...
 // }
-function getMeasures(coordinates){
+
+// coordinates: [x0, y0, x1, y1] of two points in the canvas
+// returns distance between those two points 
+function distance(coordinates){
   // hr/hi == b
-  return {
-    "rightArm": 30,
-    "leftThigh":25
+  let a = coordinates[0] - coordinates[2]
+  let b = coordinates[1] - coordinates[3]
+  return Math.round(Math.sqrt(a*a + b*b))
+}
+
+function getMeasures(bodyPartsCoordinates){
+  let measures = {}
+  for (bp in bodyPartsCoordinates){
+    measures[bp] = distance(bodyPartsCoordinates[bp])
   }
+  // return {
+  //   "rightArm": 30,
+  //   "leftThigh":25
+  // }
+  return measures
 }
 
 // bodyParts: a list of body parts: ['rightArm', ...]
