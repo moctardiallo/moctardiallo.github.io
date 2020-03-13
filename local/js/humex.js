@@ -30,10 +30,26 @@ async function imageIsLoaded() {
     flipHorizontal: false
   });
   const bodyPartsCoordinates = getBodyPartsCoordinates(pose['keypoints'], ['rightArm', 'leftThigh'])
-  drawBodyParts(bodyPartsCoordinates)
+  const measures = getMeasures(bodyPartsCoordinates)
+  drawBodyParts(bodyPartsCoordinates, measures)
 
   var dataurl = canvas.toDataURL("image/png");
   img.src = dataurl;
+}
+
+// coordinates: {
+//   "bodyPart":[x0, y0, x1, y1],
+//    ... 
+// }
+// returns {
+//   "bodyPart": 170cm,
+//   ...
+// }
+function getMeasures(coordinates){
+  return {
+    "rightArm": 30,
+    "leftThigh":25
+  }
 }
 
 // bodyParts: a list of body parts: ['rightArm', ...]
@@ -83,7 +99,7 @@ function getBodyPartsCoordinates(keypoints, bodyParts){
 
 // bodyPartsCoordinates: a {bodyPart: [list of 4 coordinates]} corresponding to the coordinates of a body parts
 // draws a segment between those two points
-function drawBodyParts(bodyPartsCoordinates) {
+function drawBodyParts(bodyPartsCoordinates, measures) {
   const ctx = document.getElementById('my_canvas').getContext('2d')
   for (bp in bodyPartsCoordinates){
     const x0 = bodyPartsCoordinates[bp][0]
@@ -94,6 +110,10 @@ function drawBodyParts(bodyPartsCoordinates) {
     ctx.moveTo(x0, y0);
     ctx.lineTo(x1, y1);
     ctx.lineWidth = 3;
+    const mx = Math.abs(x0+x1)/2 + 5
+    const my = Math.abs(y0+y1)/2
+    // ctx.fontSize = '25'
+    ctx.fillText(measures[bp], mx, my)
   
     // set line color
     ctx.strokeStyle = '#0000ff';
