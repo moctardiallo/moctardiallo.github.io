@@ -49,10 +49,14 @@ async function imageIsLoaded() {
 // coordinates: [x0, y0, x1, y1] of two points in the canvas
 // returns distance between those two points 
 function distance(coordinates){
-  // hr/hi == b
+  // hr/hi == bpr/bpi
+  let hr = 180;
+  let hi = 180;
   let a = coordinates[0] - coordinates[2]
   let b = coordinates[1] - coordinates[3]
-  return Math.round(Math.sqrt(a*a + b*b))
+  let bpi = Math.round(Math.sqrt(a*a + b*b))
+  let bpr = bpi * hr/hi
+  return bpr;
 }
 
 function getMeasures(bodyPartsCoordinates){
