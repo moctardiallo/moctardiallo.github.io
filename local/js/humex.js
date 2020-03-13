@@ -56,6 +56,9 @@ async function imageIsLoaded() {
 function distance(coordinates){
   // hr/hi == bpr/bpi
   let hr = document.getElementById("your_height").value;
+  if (!hr){
+    alert("Karim!! Entre taille la! xD")
+  }
   let a = coordinates[0] - coordinates[2]
   let b = coordinates[1] - coordinates[3]
   let bpi = Math.sqrt(a*a + b*b)
