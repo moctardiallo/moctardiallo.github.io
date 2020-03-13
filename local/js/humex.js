@@ -46,6 +46,7 @@ async function imageIsLoaded() {
 //   ...
 // }
 function getMeasures(coordinates){
+  // hr/hi == b
   return {
     "rightArm": 30,
     "leftThigh":25
@@ -110,12 +111,13 @@ function drawBodyParts(bodyPartsCoordinates, measures) {
     ctx.moveTo(x0, y0);
     ctx.lineTo(x1, y1);
     ctx.lineWidth = 3;
-    const mx = Math.abs(x0+x1)/2 + 5
+    const mx = Math.abs(x0+x1)/2 + 10
     const my = Math.abs(y0+y1)/2
-    // ctx.fontSize = '25'
-    ctx.fillText(measures[bp], mx, my)
+    ctx.font = "30px Georgia";
+    ctx.fillStyle = "red";
+    ctx.fillText(measures[bp] + " cm", mx, my)
   
-    // set line color
+    // set line colorMath.abs(y0+y1)/2
     ctx.strokeStyle = '#0000ff';
     ctx.stroke();
   }
