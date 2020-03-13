@@ -9,7 +9,8 @@ window.addEventListener('load', function() {
   });
   
 async function imageIsLoaded() { 
-  var canvas = document.createElement("canvas");
+  // var canvas = document.createElement("canvas");
+  let canvas = document.getElementById('my_canvas')
   var img = document.getElementById('your_image');
   var ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0);
@@ -29,7 +30,7 @@ async function imageIsLoaded() {
     flipHorizontal: false
   });
   const bodyPartsCoordinates = getBodyPartsCoordinates(pose['keypoints'], ['rightArm', 'leftThigh'])
-  drawBodyParts(ctx, bodyPartsCoordinates)
+  drawBodyParts(bodyPartsCoordinates)
 
   var dataurl = canvas.toDataURL("image/png");
   img.src = dataurl;
@@ -82,7 +83,8 @@ function getBodyPartsCoordinates(keypoints, bodyParts){
 
 // bodyPartsCoordinates: a {bodyPart: [list of 4 coordinates]} corresponding to the coordinates of a body parts
 // draws a segment between those two points
-function drawBodyParts(ctx, bodyPartsCoordinates) {
+function drawBodyParts(bodyPartsCoordinates) {
+  const ctx = document.getElementById('my_canvas').getContext('2d')
   for (bp in bodyPartsCoordinates){
     const x0 = bodyPartsCoordinates[bp][0]
     const y0 = bodyPartsCoordinates[bp][1]
