@@ -1,3 +1,5 @@
+let hi;
+
 window.addEventListener('load', function() {
     document.querySelector('input[type="file"]').addEventListener('change', function() {
         if (this.files && this.files[0]) {
@@ -29,6 +31,9 @@ async function imageIsLoaded() {
   const pose = await net.estimateSinglePose(img, {
     flipHorizontal: false
   });
+  let y0_hi = pose['keypoints'][0]['position']['y']
+  let y1_hi = pose['keypoints'][16]['position']['y']
+  hi = Math.abs(y0_hi - y1_hi);
   const bodyPartsCoordinates = getBodyPartsCoordinates(pose['keypoints'], ['rightArm', 'leftThigh'])
   const measures = getMeasures(bodyPartsCoordinates)
   drawBodyParts(bodyPartsCoordinates, measures)
@@ -51,12 +56,10 @@ async function imageIsLoaded() {
 function distance(coordinates){
   // hr/hi == bpr/bpi
   let hr = document.getElementById("your_height").value;
-  console.log("hr:", hr)
-  let hi = 180;
   let a = coordinates[0] - coordinates[2]
   let b = coordinates[1] - coordinates[3]
-  let bpi = Math.round(Math.sqrt(a*a + b*b))
-  let bpr = bpi * hr/hi
+  let bpi = Math.sqrt(a*a + b*b)
+  let bpr = Math.round(bpi * hr/hi)
   return bpr;
 }
 
