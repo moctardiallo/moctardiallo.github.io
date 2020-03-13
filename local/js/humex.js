@@ -50,7 +50,8 @@ async function imageIsLoaded() {
 // returns distance between those two points 
 function distance(coordinates){
   // hr/hi == bpr/bpi
-  let hr = 180;
+  let hr = document.getElementById("your_height").value;
+  console.log("hr:", hr)
   let hi = 180;
   let a = coordinates[0] - coordinates[2]
   let b = coordinates[1] - coordinates[3]
