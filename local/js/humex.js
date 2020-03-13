@@ -9,7 +9,8 @@ window.addEventListener('load', function() {
   });
   
 async function imageIsLoaded() { 
-  var canvas = document.createElement("canvas");
+  // var canvas = document.createElement("canvas");
+  let canvas = document.getElementById('my_canvas')
   var img = document.getElementById('your_image');
   var ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0);
@@ -29,10 +30,41 @@ async function imageIsLoaded() {
     flipHorizontal: false
   });
   const bodyPartsCoordinates = getBodyPartsCoordinates(pose['keypoints'], ['rightArm', 'leftThigh'])
-  drawBodyParts(ctx, bodyPartsCoordinates)
+  const measures = getMeasures(bodyPartsCoordinates)
+  drawBodyParts(bodyPartsCoordinates, measures)
 
   var dataurl = canvas.toDataURL("image/png");
   img.src = dataurl;
+}
+
+// coordinates: {
+//   "bodyPart":[x0, y0, x1, y1],
+//    ... 
+// }
+// returns {
+//   "bodyPart": 170cm,
+//   ...
+// }
+
+// coordinates: [x0, y0, x1, y1] of two points in the canvas
+// returns distance between those two points 
+function distance(coordinates){
+  // hr/hi == b
+  let a = coordinates[0] - coordinates[2]
+  let b = coordinates[1] - coordinates[3]
+  return Math.round(Math.sqrt(a*a + b*b))
+}
+
+function getMeasures(bodyPartsCoordinates){
+  let measures = {}
+  for (bp in bodyPartsCoordinates){
+    measures[bp] = distance(bodyPartsCoordinates[bp])
+  }
+  // return {
+  //   "rightArm": 30,
+  //   "leftThigh":25
+  // }
+  return measures
 }
 
 // bodyParts: a list of body parts: ['rightArm', ...]
@@ -82,7 +114,8 @@ function getBodyPartsCoordinates(keypoints, bodyParts){
 
 // bodyPartsCoordinates: a {bodyPart: [list of 4 coordinates]} corresponding to the coordinates of a body parts
 // draws a segment between those two points
-function drawBodyParts(ctx, bodyPartsCoordinates) {
+function drawBodyParts(bodyPartsCoordinates, measures) {
+  const ctx = document.getElementById('my_canvas').getContext('2d')
   for (bp in bodyPartsCoordinates){
     const x0 = bodyPartsCoordinates[bp][0]
     const y0 = bodyPartsCoordinates[bp][1]
@@ -92,8 +125,13 @@ function drawBodyParts(ctx, bodyPartsCoordinates) {
     ctx.moveTo(x0, y0);
     ctx.lineTo(x1, y1);
     ctx.lineWidth = 3;
+    const mx = Math.abs(x0+x1)/2 + 10
+    const my = Math.abs(y0+y1)/2
+    ctx.font = "30px Georgia";
+    ctx.fillStyle = "red";
+    ctx.fillText(measures[bp] + " cm", mx, my)
   
-    // set line color
+    // set line colorMath.abs(y0+y1)/2
     ctx.strokeStyle = '#0000ff';
     ctx.stroke();
   }
