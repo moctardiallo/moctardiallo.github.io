@@ -479,7 +479,8 @@ pre {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   margin-right: -15px;
-  margin-left: -15px; }
+  margin-left: -15px; 
+  align-items: center;}
 
 .no-gutters {
   margin-right: 0;
@@ -8932,9 +8933,10 @@ h1, h2, h3, h4, h5,
     color: rgba(255, 255, 255, 0.9); }
 
 .project {
-  width: 100%;
+  width: 75%;
   height: 350px;
   margin-bottom: 0;
+  margin: 13%;
   position: relative;
   z-index: 0; }
   .project.img-2 {
